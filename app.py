@@ -18,8 +18,6 @@ dic_tarefas[id_count] = Tarefa('descomp', 'estudar pra prova', False)
 
 @app.route('/Tarefa', methods=['GET', 'POST'])
 def taref():
-    if not request.json or not 'title' in request.json:
-        abort(400)
     global id_count, dic_tarefas
     if request.method == 'GET':
         tarefas = []
@@ -57,9 +55,9 @@ def taref_id(tarefa_id):
 
         elif request.method == 'PUT':
             ta = dic_tarefas[tarefa_id]
-            ta.set_title(request.json.get('title')
-            ta.set_description(request.json.get('description')
-            ta.set_done(request.json.get('done')
+            ta.set_title(request.json.get('title'))
+            ta.set_description(request.json.get('description'))
+            ta.set_done(request.json.get('done'))
             t = "titulo: " + ta.get_title()
             d = "descricao: " + ta.get_description()
             s = "feita: " + str(ta.get_done())
