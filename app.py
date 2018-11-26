@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 from flask import Flask, request, jsonify
-from tarefa import Tarefa
+from tarefac import Tarefa
 
 app = Flask(__name__)
 
@@ -18,8 +18,9 @@ dic_tarefas[id_count] = Tarefa('descomp', 'estudar pra prova', False)
 
 @app.route('/Tarefa', methods=['GET', 'POST'])
 def taref():
+    if not request.json or not 'title' in request.json:
+        abort(400)
     global id_count, dic_tarefas
-    # print('dadoss', request.data)
     if request.method == 'GET':
         tarefas = []
         for k, v in dic_tarefas.items():
@@ -29,9 +30,9 @@ def taref():
             tarefas.append([t,d,s])
         return jsonify(tarefas)
     else:
-        t = request.form['title']
-        d = request.form['description']
-        s = request.form['done']
+        t = request.json.get('title')
+        d = request.json.get('description')
+        s = request.json.get('done')
         tar = Tarefa(t, d, s)
         dic_tarefas[id_count+1] = tar
         id_count += 1
@@ -46,8 +47,6 @@ def taref():
 
 @app.route('/Tarefa/<int:tarefa_id>', methods=['GET', 'PUT', 'DELETE'])
 def taref_id(tarefa_id):
-    # global dic_tarefas
-
     try:
         if request.method == 'GET':
             ta = dic_tarefas[tarefa_id]
@@ -58,9 +57,9 @@ def taref_id(tarefa_id):
 
         elif request.method == 'PUT':
             ta = dic_tarefas[tarefa_id]
-            ta.set_title(request.form['title'])
-            ta.set_description(request.form['description'])
-            ta.set_done(request.form['done'])
+            ta.set_title(request.json.get('title')
+            ta.set_description(request.json.get('description')
+            ta.set_done(request.json.get('done')
             t = "titulo: " + ta.get_title()
             d = "descricao: " + ta.get_description()
             s = "feita: " + str(ta.get_done())
