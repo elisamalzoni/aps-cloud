@@ -4,7 +4,7 @@ class Tarefa():
         self.title = title
         self.description = description
         self.done = done
-    
+
     def set_title(self, title):
         self.title = title
     
@@ -13,7 +13,7 @@ class Tarefa():
     
     def set_done(self, done):
         self.done = done
-    
+
     def get_title(self):
         return self.title
     

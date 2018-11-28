@@ -5,9 +5,9 @@ import requests
 import json
 import os
 
-print(os.environ['END'])
 
-end = 'http://localhost:5000'
+var = os.environ.get('END')
+end = str(var)
 
 if sys.argv[1] == 'adicionar':
     t = sys.argv[2]
