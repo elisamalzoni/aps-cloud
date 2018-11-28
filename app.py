@@ -28,6 +28,7 @@ def taref():
             tarefas.append([t,d,s])
         return jsonify(tarefas)
     else:
+        print('--------------------------------------------', request.json)
         t = request.json.get('title')
         d = request.json.get('description')
         s = request.json.get('done')
@@ -71,7 +72,7 @@ def taref_id(tarefa_id):
 
 @app.route('/healthcheck')
 def hc():
-    return '200'
+    return '', 200
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
