@@ -28,7 +28,6 @@ def taref():
             tarefas.append([t,d,s])
         return jsonify(tarefas)
     else:
-        print('--------------------------------------------', request.json)
         t = request.json.get('title')
         d = request.json.get('description')
         s = request.json.get('done')
