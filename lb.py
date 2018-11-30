@@ -182,13 +182,14 @@ def hcloop(dici_ips, client, ec2, n, ipbanc):
 
         time.sleep(3)
 
-for i in banco['Reservations']:
-    for c in i['Instances']:
-        ipb = c['PublicIpAddress']
-    
+
 
 
 if __name__ == '__main__':
+    for i in banco['Reservations']:
+        for c in i['Instances']:
+            ipb = c['PublicIpAddress']
+    
     t = threading.Thread(target=hcloop(dici_ips, client, ec2, 2, ipb))
     t.start()
     app.run(debug=True, host='0.0.0.0')
