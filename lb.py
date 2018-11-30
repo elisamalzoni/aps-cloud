@@ -159,7 +159,7 @@ def hcloop(dici_ips, client, ec2, n, ipbanc):
                 cria_instancia(ec2, 1, ipbanc)
                 time.sleep(120)
 
-        time.sleep(3)
+        time.sleep(20)
 
 def get_ip_banco():
 
