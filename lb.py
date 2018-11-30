@@ -62,13 +62,9 @@ banco = client.describe_instances(
     ],
 )
 
-for i in banco['Reservations']:
-    for c in i['Instances']:
-        ipb = c['PublicIpAddress']
-    
 
 
-def cria_instancia(ec2, n):
+def cria_instancia(ec2, n, ipbanc):
 
     instances = ec2.create_instances(
         ImageId='ami-0ac019f4fcb7cb7e6', # image id ubuntu 18 ami-0ac019f4fcb7cb7e6
@@ -85,7 +81,7 @@ def cria_instancia(ec2, n):
                     cd aps-cloud
                     export IPBANCO={}
                     chmod a+x installlb.sh
-                    ./installlb.sh'''.format(ipb),
+                    ./installlb.sh'''.format(ipbanc),
         TagSpecifications=[
             {   'ResourceType': 'instance',
                 'Tags':[
@@ -143,7 +139,7 @@ def catch_all(path):
         return r.text
 
 
-def hcloop(dici_ips, client, ec2, n):
+def hcloop(dici_ips, client, ec2, n, ipbanc):
     
 
     while True:
@@ -161,7 +157,7 @@ def hcloop(dici_ips, client, ec2, n):
         elif len(dici_ips.values())<n:
             criar = n - len(dici_ips.values())
             print('criando {} novas instancias'.format(criar))
-            cria_instancia(ec2, criar)
+            cria_instancia(ec2, criar, ipbanc)
             time.sleep(120)
 
         for id_i, ip in dici_ips.items():
@@ -174,19 +170,25 @@ def hcloop(dici_ips, client, ec2, n):
                     print('apagando instancia: ', id_i)
                     ## contador timeout ???
                     time.sleep(120)
-                    cria_instancia(ec2, 1)
+                    cria_instancia(ec2, 1, ipbanc)
 
             except:
                 apaga_intancia(client, [id_i])
                 print('apagando instancia: ', id_i)
                 ## contador timeout ???
                 print('{} entrou timeout'.format(end))
-                cria_instancia(ec2, 1)
+                cria_instancia(ec2, 1, ipbanc)
                 time.sleep(120)
 
         time.sleep(3)
 
+for i in banco['Reservations']:
+    for c in i['Instances']:
+        ipb = c['PublicIpAddress']
+    
+
+
 if __name__ == '__main__':
-    t = threading.Thread(target=hcloop(dici_ips, client, ec2, 2))
+    t = threading.Thread(target=hcloop(dici_ips, client, ec2, 2, ipb))
     t.start()
     app.run(debug=True, host='0.0.0.0')
