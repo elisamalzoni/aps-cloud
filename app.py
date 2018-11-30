@@ -2,7 +2,6 @@
 
 from flask import Flask, request, jsonify
 from tarefac import Tarefa
-import urllib, json
 
 app = Flask(__name__)
 

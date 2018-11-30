@@ -8,6 +8,7 @@ import os
 
 var = os.environ.get('END')
 end = str(var)
+print('endereco: ', end)
 
 if sys.argv[1] == 'adicionar':
     t = sys.argv[2]

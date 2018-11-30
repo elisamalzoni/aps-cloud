@@ -86,12 +86,6 @@ def apaga_intancia(client, ids_list):
 dici_ips = instancias_rodando(client)
 
 
-# @app.route('/ipbanco'methods=['GET'])
-# def ipb():
-#     if request.method == 'GET':
-#         ip = requests.get('https://ipapi.co/ip/')
-#         return ip.text, 200
-
 @app.route('/', defaults={'path': ''}, methods=['GET', 'POST', 'PUT', 'DELETE'])
 @app.route('/<path:path>', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def catch_all(path):
@@ -184,16 +178,49 @@ def get_ip_banco():
             },
         ],
     )
-
+    ipb = 0
     for i in banco['Reservations']:
         for c in i['Instances']:
             ipb = c['PublicIpAddress']
     return ipb
 
+def cria_db(ec2, n):
+    
+    instances = ec2.create_instances(
+        ImageId='ami-0ac019f4fcb7cb7e6', # image id ubuntu 18 ami-0ac019f4fcb7cb7e6
+        MinCount=n,
+        MaxCount=n,
+        InstanceType='t2.micro',
+        KeyName='elisaaps',
+        SecurityGroups=[
+            'elisasc',
+        ],
+        UserData='''#!/bin/bash
+                    cd /home/ubuntu
+                    git clone https://github.com/elisamalzoni/aps-cloud.git
+                    cd aps-cloud
+                    chmod a+x install.sh
+                    ./install.sh''',
+        TagSpecifications=[
+            {   'ResourceType': 'instance',
+                'Tags':[
+                    {
+                        'Key': 'Owner',
+                        'Value': 'elisabanco'
+                    },
+                ]
+            },
+        ]
+    )
+
+
+cria_db(ec2, 1)
+print('criando banco de dados....')
+time.sleep(50)
+print('ip banco:', get_ip_banco())
+
 if __name__ == '__main__':
 
-    
-    
-    t = threading.Thread(target=hcloop(dici_ips, client, ec2, 2, get_ip_banco()))
+    t = threading.Thread(target=hcloop(dici_ips, client, ec2, 4, get_ip_banco()))
     t.start()
     app.run(debug=True, host='0.0.0.0')
