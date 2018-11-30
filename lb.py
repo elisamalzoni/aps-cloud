@@ -14,7 +14,7 @@ ec2 = boto3.resource('ec2')
 
 app = Flask(__name__)
 
-def randon_ip(dici):
+def random_ip(dici):
     ips = [i for i in dici.keys()]
     rand = np.random.choice(ips)
     return dici[rand]
@@ -83,14 +83,15 @@ def apaga_intancia(client, ids_list):
         InstanceIds=ids_list
     )
 
-dici_ips = instancias_rodando(client)
 
 
 @app.route('/', defaults={'path': ''}, methods=['GET', 'POST', 'PUT', 'DELETE'])
 @app.route('/<path:path>', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def catch_all(path):
+    dici_ips = instancias_rodando(client)
+
     print('entrou catch all')
-    red = randon_ip(dici_ips)
+    red = random_ip(dici_ips)
 
     ende = 'http://'+red+':5000/'+path
     print(ende)
@@ -214,10 +215,12 @@ def cria_db(ec2, n):
     )
 
 
-cria_db(ec2, 1)
-print('criando banco de dados....')
-time.sleep(50)
+# cria_db(ec2, 1)
+# print('criando banco de dados....')
+# time.sleep(50)
 print('ip banco:', get_ip_banco())
+dici_ips = instancias_rodando(client)
+
 
 if __name__ == '__main__':
 
