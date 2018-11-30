@@ -2,8 +2,6 @@
 
 from flask import Flask, request
 import boto3
-from pprint import pprint
-import random
 import requests
 import numpy as np
 import threading
@@ -215,9 +213,9 @@ def cria_db(ec2, n):
     )
 
 
-# cria_db(ec2, 1)
-# print('criando banco de dados....')
-# time.sleep(50)
+cria_db(ec2, 1)
+print('criando banco de dados....')
+time.sleep(50)
 print('ip banco:', get_ip_banco())
 dici_ips = instancias_rodando(client)
 

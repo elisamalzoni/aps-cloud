@@ -1,38 +1,10 @@
 from flask import Flask, request
-import boto3
 import requests
 import os
 
-# client = boto3.client('ec2')
-# ec2 = boto3.resource('ec2')
 
 app = Flask(__name__)
 
-# def ip_banco(client):
-#     maq_rodando = client.describe_instances(
-#         Filters=[
-#             {
-#                 'Name': 'tag:Owner',
-#                 'Values': [
-#                     'elisabanco',
-#                 ]
-#             },
-#             {
-#                 'Name': 'instance-state-name',
-#                 'Values': [
-#                     'running',
-#                 ]
-#             },
-#         ],
-#     )
-
-#     dici_ips = {}
-
-#     for i in maq_rodando['Reservations']:
-#         for c in i['Instances']:
-#             ip = c['PublicIpAddress']
-        
-#     return ip
 
 @app.route('/', defaults={'path': ''}, methods=['GET', 'POST', 'PUT', 'DELETE'])
 @app.route('/<path:path>', methods=['GET', 'POST', 'PUT', 'DELETE'])
