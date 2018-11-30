@@ -40,7 +40,7 @@ def catch_all(path):
 
     print('entrou catch all')
     
-    ip = os.envron.get('IPBANCO')
+    ip = os.environ.get('IPBANCO')
 
     ende = 'http://'+ip+':5000/'+path
     print(ende)
