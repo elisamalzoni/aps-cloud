@@ -62,7 +62,7 @@ banco = client.describe_instances(
     ],
 )
 
-for i in maq_rodando['Reservations']:
+for i in banco['Reservations']:
     for c in i['Instances']:
         ipb = c['PublicIpAddress']
     
