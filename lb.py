@@ -65,7 +65,7 @@ def cria_instancia(ec2, n, ipbanc):
                     cd aps-cloud
                     export IPBANCO={}
                     chmod a+x installlb.sh
-                    ./installlb.sh'''.format(ipbanc),
+                    source installlb.sh'''.format(ipbanc),
         TagSpecifications=[
             {   'ResourceType': 'instance',
                 'Tags':[
@@ -221,6 +221,6 @@ print('ip banco:', get_ip_banco())
 
 if __name__ == '__main__':
 
-    t = threading.Thread(target=hcloop(dici_ips, client, ec2, 4, get_ip_banco()))
+    t = threading.Thread(target=hcloop, args=(dici_ips, client, ec2, 4, get_ip_banco()))
     t.start()
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=False, host='0.0.0.0')
