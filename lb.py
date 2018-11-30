@@ -45,22 +45,6 @@ def instancias_rodando(client):
         
     return dici_ips
 
-banco = client.describe_instances(
-    Filters=[
-        {
-            'Name': 'tag:Owner',
-            'Values': [
-                'elisabanco',
-            ]
-        },
-        {
-            'Name': 'instance-state-name',
-            'Values': [
-                'running',
-            ]
-        },
-    ],
-)
 
 
 
@@ -182,14 +166,34 @@ def hcloop(dici_ips, client, ec2, n, ipbanc):
 
         time.sleep(3)
 
+def get_ip_banco():
 
+    banco = client.describe_instances(
+        Filters=[
+            {
+                'Name': 'tag:Owner',
+                'Values': [
+                    'elisabanco',
+                ]
+            },
+            {
+                'Name': 'instance-state-name',
+                'Values': [
+                    'running',
+                ]
+            },
+        ],
+    )
 
-
-if __name__ == '__main__':
     for i in banco['Reservations']:
         for c in i['Instances']:
             ipb = c['PublicIpAddress']
+    return ipb
+
+if __name__ == '__main__':
+
     
-    t = threading.Thread(target=hcloop(dici_ips, client, ec2, 2, ipb))
+    
+    t = threading.Thread(target=hcloop(dici_ips, client, ec2, 2, get_ip_banco()))
     t.start()
     app.run(debug=True, host='0.0.0.0')
