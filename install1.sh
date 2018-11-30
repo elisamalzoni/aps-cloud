@@ -7,4 +7,5 @@ pip3 install numpy
 cd /home/ubuntu
 git clone https://github.com/elisamalzoni/aps-cloud.git
 cd aps-cloud
+source script_end_server.sh
 python3 lb.py
