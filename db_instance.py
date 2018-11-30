@@ -39,4 +39,7 @@ def cria_instancia(ec2, n):
             },
         ]
     )
+
+
 cria_instancia(ec2, 1)
+

@@ -45,6 +45,29 @@ def instancias_rodando(client):
         
     return dici_ips
 
+banco = client.describe_instances(
+    Filters=[
+        {
+            'Name': 'tag:Owner',
+            'Values': [
+                'elisabanco',
+            ]
+        },
+        {
+            'Name': 'instance-state-name',
+            'Values': [
+                'running',
+            ]
+        },
+    ],
+)
+
+for i in maq_rodando['Reservations']:
+    for c in i['Instances']:
+        ipb = c['PublicIpAddress']
+    
+
+
 def cria_instancia(ec2, n):
 
     instances = ec2.create_instances(
@@ -60,8 +83,9 @@ def cria_instancia(ec2, n):
                     cd /home/ubuntu
                     git clone https://github.com/elisamalzoni/aps-cloud.git
                     cd aps-cloud
+                    export IPBANCO={}
                     chmod a+x installlb.sh
-                    ./installlb.sh''',
+                    ./installlb.sh'''.format(ipb),
         TagSpecifications=[
             {   'ResourceType': 'instance',
                 'Tags':[
@@ -80,6 +104,13 @@ def apaga_intancia(client, ids_list):
     )
 
 dici_ips = instancias_rodando(client)
+
+
+# @app.route('/ipbanco'methods=['GET'])
+# def ipb():
+#     if request.method == 'GET':
+#         ip = requests.get('https://ipapi.co/ip/')
+#         return ip.text, 200
 
 @app.route('/', defaults={'path': ''}, methods=['GET', 'POST', 'PUT', 'DELETE'])
 @app.route('/<path:path>', methods=['GET', 'POST', 'PUT', 'DELETE'])

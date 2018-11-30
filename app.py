@@ -2,6 +2,7 @@
 
 from flask import Flask, request, jsonify
 from tarefac import Tarefa
+import urllib, json
 
 app = Flask(__name__)
 
@@ -65,13 +66,14 @@ def taref_id(tarefa_id):
         
         elif request.method == 'DELETE':
             del dic_tarefas[tarefa_id]
-            return '200'
+            return 'deletada', 200
     except:
-        return '404'
+        return '404', 404
 
 @app.route('/healthcheck')
 def hc():
     return '', 200
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
